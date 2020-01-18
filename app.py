@@ -48,7 +48,7 @@ def asubmit():
         cur = con.cursor()
         cur.execute("INSERT INTO ADMIN (admin_level,name,password) VALUES (?,?,?)",(0,name,pwd))
         con.commit()
-    return redirect(url_for('adashboard'))
+    redirect(url_for('adashboard'))
 
 # ADMIN DASHBOARD
 @app.route('/admin/dashboard')
@@ -56,11 +56,8 @@ def adashboard():
     try: 
         if(session['user'] == 'admin'):
             render_template('data.html')
-        else: 
-            return redirect(url_for('asignin'))
     except KeyError:
         return redirect(url_for('asignin'))
-    return redirect(url_for('asignin'))
 
 # ADMIN COMPLAIN PAGE
 @app.route('/admin/complain')
@@ -71,7 +68,6 @@ def complainAll():
         cur = con.cursor()
         cur.execute("SELECT * from COMPLAIN")
         rows = cur.fetchall()
-        print(rows)
         return render_template("clist.html",rows = rows)
     else:
         redirect(url_for('asignin'))
@@ -84,8 +80,11 @@ def ausers():
     cur = con.cursor()
     cur.execute("SELECT * from USER")
     rows = cur.fetchall()
-    
     return render_template("ulist.html",rows = rows,adminlevel=session['level'])
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('data.html')
 
 # COMPLAIN PORTAL
 @app.route('/portal/complain')
