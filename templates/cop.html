@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <form method="POST" action='/usubmit'>
+        <h1>Post your complain!</h1>
+        <fieldset>
+
+            <label for="name">Complain: </label>
+            <input type="text" id="name" name="complain">
+            <label for="name">Category: </label>
+            <select name="cat">
+                <optgroup label="Hostel">
+                    <option value="Electrical">Electrical issues</option>
+                    <option value="Plumbing">Plumbing issues</option>
+                    <option value="Warden">Warden/caretaker</option>
+                    <option value="Wifi">Wi-Fi</option>
+                </optgroup>
+                <optgroup label="Mess">
+                    <option value="food">Food</option>
+                    <option value="Hygiene">Hygiene</option>
+                </optgroup>
+                <optgroup label="Academics">
+                    <option value="Teacher">Professor</option>
+                    <option value="classroom">Classroom</option>
+                </optgroup>
+
+            </select>
+
+
+        </fieldset>
+        <button type="submit">Post it!</button>
+    </form>
+</body>
+
+</html>
