@@ -135,6 +135,7 @@ def logout():
     session.pop('username',None)
     session.pop('user',None)
     session.pop('level',None)
+    return redirect(url_for('homepage'))
 
 if __name__ == '__main__':
     app.secret_key=os.urandom(24)
