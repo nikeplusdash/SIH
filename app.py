@@ -48,7 +48,7 @@ def asubmit():
         cur = con.cursor()
         cur.execute("INSERT INTO ADMIN (admin_level,name,password) VALUES (?,?,?)",(0,name,pwd))
         con.commit()
-    redirect(url_for('adashboard'))
+    return redirect(url_for('adashboard'))
 
 # ADMIN DASHBOARD
 @app.route('/admin/dashboard')
@@ -70,21 +70,46 @@ def complainAll():
         rows = cur.fetchall()
         return render_template("clist.html",rows = rows)
     else:
-        redirect(url_for('asignin'))
+        return redirect(url_for('asignin'))
+
+# ADMIN COMPLAIN PAGE UPDATE
+@app.route('/admin/complain/<id>')
+def complainUpd(id):
+    if(session['user'] == 'admin'):
+        con = sql.connect("database.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("UPDATE COMPLAIN SET status_id = 1  WHERE id IS ?",id)
+        con.commit()
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * from COMPLAIN")
+        rows = cur.fetchall()
+        return render_template("clist.html",rows = rows)
+        return render_template("clist.html",)
+    else:
+        return redirect(url_for('asignin'))
 
 # ADMIN USER PAGE
 @app.route('/admin/users')
 def ausers():
-    con = sql.connect("database.db")
-    con.row_factory = sql.Row
-    cur = con.cursor()
-    cur.execute("SELECT * from USER")
-    rows = cur.fetchall()
-    return render_template("ulist.html",rows = rows,adminlevel=session['level'])
-
+    if(session['user'] == 'admin'):
+        con = sql.connect("database.db")
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * from USER")
+        rows = cur.fetchall()
+        return render_template("ulist.html",rows = rows,adminlevel=session['level'])
+    else:
+        return redirect(url_for('asignin'))
+    
+# DASHBOARD
 @app.route('/dashboard')
 def dashboard():
-    return render_template('data.html')
+    if(session['user'] == 'admin'):
+        return render_template('data.html')
+    else:
+        return redirect(url_for('asignin'))
 
 # COMPLAIN PORTAL
 @app.route('/portal/complain')
@@ -103,6 +128,13 @@ def submit():
         con.commit()
         msg = "Record successfully added"
     return redirect(url_for('homepage'))
+
+# LOGOUT
+@app.route('/logout')
+def logout():
+    session.pop('username',None)
+    session.pop('user',None)
+    session.pop('level',None)
 
 if __name__ == '__main__':
     app.secret_key=os.urandom(24)
